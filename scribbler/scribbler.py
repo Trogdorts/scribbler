@@ -1,6 +1,7 @@
 from .timeline import Timeline
 import logging
 import random
+from copy import copy
 
 #TODO Load config from file
 
@@ -54,11 +55,9 @@ class Scribbler:
         else:
             self.wordcount = self.get_wordcount()
 
+        self.num_scenes = self.get_number_of_scenes(self.wordcount, self.avg_scene_length)
+        self.scenes_dict = self.define_scenes(self.wordcount, self.num_scenes, self.avg_scene_length)
 
-
-
-
-        self.timeline = Timeline()
         logging.info(self.__dict__)
 
 
@@ -79,6 +78,39 @@ class Scribbler:
         elif rand_lenght == 100:
             rounded_length = rand_lenght
         return rounded_length
+
+    def get_number_of_scenes(self, wordcount, avg_scene_length):
+        num_scenes = round(wordcount / avg_scene_length)
+        if not num_scenes % 2 == 0:
+            num_scenes += 1
+        return num_scenes
+
+    def define_scenes(self, wordcount, num_scenes, avg_scene_length):
+        # each entry should have a scene number, a word count start number, and end number
+        # Brute Force!
+        # loop through building scenes until getting a proper fit
+        loop = 0
+
+        while True:
+            loop += 1
+            scenes = {}
+            wordsleft = copy(wordcount)
+            high = avg_scene_length + (avg_scene_length * .5)
+            low = avg_scene_length - (avg_scene_length * .5)
+            for n in range(1, num_scenes + 1):
+                rand_lenght = random.randint(low, high)
+                rand_lenght = round(rand_lenght, -2)
+                wordsleft = wordsleft - rand_lenght
+                data = {"length": rand_lenght,
+                        "start": wordcount - (wordsleft + rand_lenght),
+                        "stop": wordcount - (wordsleft + rand_lenght) + (rand_lenght - 1)
+                        }
+                scenes[n] = data
+            if wordsleft == 0:
+                print("Loops:", loop)
+                break
+        return scenes
+
 
 
 
