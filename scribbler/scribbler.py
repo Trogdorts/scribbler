@@ -54,6 +54,34 @@ class Scribbler:
             self.wordcount = kwargs.get('wordcount')
         else:
             self.wordcount = self.get_wordcount()
+        if kwargs is not None and 'backfill' in kwargs:
+            self.backfill = kwargs.get('backfill')
+        else:
+            self.backfill = 5
+        if kwargs is not None and 'forwardfill' in kwargs:
+            self.forwardfill = kwargs.get('forwardfill')
+        else:
+            self.forwardfill = 5
+
+        self.timeline = Timeline()
+
+        self.workingstory = self.backfill+1
+
+
+        self.stories = self.backfill_forwardfill(self.wordcount, self.backfill, self.forwardfill)
+
+        # Expand the timeline with the backfill books and the forward fill books
+        # this is the building block for all the plot lines layered throughout a
+        # series or even just a single book. the farther back you backfill, the more
+        # intricate and layered the plots will be.
+        story_num = 0
+        for wordcount in self.stories:
+            story_num+=1
+            self.timeline.expand_timeline(story_num, wordcount)
+
+
+
+
 
         self.num_scenes = self.get_number_of_scenes(self.wordcount, self.avg_scene_length)
         self.scenes_dict = self.define_scenes(self.wordcount, self.num_scenes, self.avg_scene_length)
@@ -78,11 +106,24 @@ class Scribbler:
         elif rand_lenght == 100:
             rounded_length = rand_lenght
         return rounded_length
+    
+    def backfill_forwardfill(self, wordcount, backfill, forwardfill):
+        # Create stories to backfill and forwardfill the timeline
+        series = []
+        for num in range(1, (backfill + 1)):
+            wordcnt = self.get_wordcount()
+            series.append(wordcnt)
+        series.append(wordcount)
+        for num in range(1, (forwardfill + 1)):
+            wordcnt = self.get_wordcount()
+            series.append(wordcnt)
+        return series
 
     def get_number_of_scenes(self, wordcount, avg_scene_length):
         num_scenes = round(wordcount / avg_scene_length)
         if not num_scenes % 2 == 0:
             num_scenes += 1
+        logging.info("Split {} words into {} scenes.".format(wordcount, num_scenes))
         return num_scenes
 
     def define_scenes(self, wordcount, num_scenes, avg_scene_length):
@@ -90,7 +131,6 @@ class Scribbler:
         # Brute Force!
         # loop through building scenes until getting a proper fit
         loop = 0
-
         while True:
             loop += 1
             scenes = {}
@@ -107,7 +147,7 @@ class Scribbler:
                         }
                 scenes[n] = data
             if wordsleft == 0:
-                print("Loops:", loop)
+                logging.info("Looped {} times to create {} randomly sized scenes.".format(str(loop), num_scenes))
                 break
         return scenes
 
