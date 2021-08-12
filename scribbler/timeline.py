@@ -25,7 +25,6 @@ class Timeline:
             entrydict = {'story': int(story_num), 's_block':s_block, 't_block':t_last_num}
             self.timeline = self.timeline.append(entrydict, ignore_index=True)
 
-
     def display_timeline(self):
         import matplotlib.pyplot as plot
         from matplotlib.pyplot import text
@@ -42,7 +41,6 @@ class Timeline:
         plot.ylim(-10, 10)
         plot.xlim(0, self.timeline['t_block'].iloc[-1])
         plot.show()
-
 
 if __name__ == "__main__":
     from mylogmd import startlogging

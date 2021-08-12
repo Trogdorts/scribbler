@@ -63,14 +63,8 @@ class Scribbler:
             self.forwardfill = 5
 
         self.timeline = Timeline()
-
         self.workingstory = self.backfill+1
-
-
         self.backfill_forwardfill(self.wordcount, self.backfill, self.forwardfill)
-
-
-
         self.num_scenes = self.get_number_of_scenes(self.wordcount, self.avg_scene_length)
         self.scenes_dict = self.define_scenes(self.wordcount, self.num_scenes, self.avg_scene_length)
 
