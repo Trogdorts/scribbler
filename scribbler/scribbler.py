@@ -34,7 +34,6 @@ wordcounts = {
 
 class Scribbler:
 
-
     def __init__(self, **kwargs):
         logging.info("Initializing a new Scribbler class instance.")
         if kwargs is not None and 'genre' in kwargs:
@@ -68,18 +67,7 @@ class Scribbler:
         self.workingstory = self.backfill+1
 
 
-        self.stories = self.backfill_forwardfill(self.wordcount, self.backfill, self.forwardfill)
-
-        # Expand the timeline with the backfill books and the forward fill books
-        # this is the building block for all the plot lines layered throughout a
-        # series or even just a single book. the farther back you backfill, the more
-        # intricate and layered the plots will be.
-        story_num = 0
-        for wordcount in self.stories:
-            story_num+=1
-            self.timeline.expand_timeline(story_num, wordcount)
-
-
+        self.backfill_forwardfill(self.wordcount, self.backfill, self.forwardfill)
 
 
 
@@ -87,7 +75,6 @@ class Scribbler:
         self.scenes_dict = self.define_scenes(self.wordcount, self.num_scenes, self.avg_scene_length)
 
         logging.info(self.__dict__)
-
 
 
 
@@ -117,7 +104,15 @@ class Scribbler:
         for num in range(1, (forwardfill + 1)):
             wordcnt = self.get_wordcount()
             series.append(wordcnt)
-        return series
+
+        # Expand the timeline with the backfill books and the forward fill books
+        # this is the building block for all the plot lines layered throughout a
+        # series or even just a single book. the farther back you backfill, the more
+        # intricate and layered the plots will be.
+        story_num = 0
+        for wordcount in series:
+            story_num+=1
+            self.timeline.expand_timeline(story_num, wordcount)
 
     def get_number_of_scenes(self, wordcount, avg_scene_length):
         num_scenes = round(wordcount / avg_scene_length)
