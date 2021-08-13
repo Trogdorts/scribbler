@@ -2,6 +2,7 @@ from .timeline import Timeline
 import logging
 import random
 from copy import copy
+import numpy as np
 
 #TODO Load config from file
 
@@ -29,7 +30,14 @@ wordcounts = {
             },
 }
 
-
+basic_plots = {
+    'rise':             np.array([[0, 25, 50, 75,100],  [-17, -20, 0, 20, 17]]),
+    'fall':             np.array([[0, 25, 50, 75,100],  [17, 20, 0, -20, -17]]),
+    'fall_rise':        np.array([[0, 15, 29, 37, 55, 75,85, 100],  [12, 8, 0,  -8, -22, 5, 10, 13]]),
+    'rise_fall':        np.array([[0, 25, 50, 75,100],  [-15, -3, 20, -3, -15]]),
+    'rise_fall_rise':   np.array([[0, 25, 50, 75,100],  [-15, 15, 0, -14,15]]),
+    'fall_rise_fall':   np.array([[0, 25, 50, 75,100],  [15, -15, 0, 14,-15]])
+}
 
 
 class Scribbler:

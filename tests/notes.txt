@@ -1,0 +1,25 @@
+
+
+set an upper and lower limit, such as 50, which would give a range of 100, from 50 to - 50
+
+set a limmit for the beginning and the end
+    that way you can then find the range from the upper and lower limit, divide that by the number of blocks
+then use each one to lower the range over time
+
+say the limit is 50
+
+passing in an arc, the highest number is 15
+
+divide 50 by 15 then times each number in the arc by that number,
+
+modify this over time by using the modifier from above
+
+
+
+
+the main plot for a novel would have an upper and lower of 50 from beginning to end
+    then for each story after that it would lower dramatically
+    
+    
+on that note, when you pass in a timeline, you will also need to pass in what story is the MAIN 
+that way it will rise into the main, be at the upper and lower for the main, then down again afterwards
